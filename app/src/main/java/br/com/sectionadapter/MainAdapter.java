@@ -1,0 +1,73 @@
+package br.com.sectionadapter;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.List;
+
+import br.com.sectionadapter.section.DataItem;
+import br.com.sectionadapter.section.SectionAdapter;
+import br.com.sectionadapter.section.SectionItem;
+
+public class MainAdapter extends SectionAdapter<TesteVO> {
+
+    public MainAdapter(List<TesteVO> dataSet) {
+        super(dataSet);
+    }
+
+    @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        View view;
+        if (viewType == DATA) {
+            view = inflater.inflate(R.layout.row_teste, parent, false);
+            return new ViewHolder(view);
+        } else {
+            view = inflater.inflate(R.layout.section_teste, parent, false);
+            return new SectionViewHolder(view);
+        }
+    }
+
+    @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (getItemViewType(position) == DATA) {
+            DataItem<TesteVO> item = getItem(position);
+            ViewHolder holder1 = (ViewHolder) holder;
+            if (item != null) {
+                holder1.tvNome.setText(item.data.getName());
+                holder1.tvCpf.setText(item.data.getCpf());
+            }
+        } else {
+            SectionItem item = getSection(position);
+            SectionViewHolder holder2 = ((SectionViewHolder) holder);
+            if (item != null) {
+                holder2.tvSection.setText(item.section);
+            }
+        }
+    }
+
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvNome;
+        TextView tvCpf;
+
+        ViewHolder(View v) {
+            super(v);
+            tvNome = v.findViewById(R.id.tv_nome);
+            tvCpf = v.findViewById(R.id.tv_cpf);
+        }
+    }
+
+    private static class SectionViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvSection;
+
+        SectionViewHolder(View itemView) {
+            super(itemView);
+            tvSection = itemView.findViewById(R.id.tv_section);
+
+        }
+    }
+}
