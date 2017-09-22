@@ -18,33 +18,33 @@ public class MainAdapter extends SectionAdapter<TesteVO> {
         super(dataSet);
     }
 
-    @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public RecyclerView.ViewHolder onCreateSectionViewHolder(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.section_teste, parent, false);
+        return new SectionViewHolder(view);
 
-        View view;
-        if (viewType == DATA) {
-            view = inflater.inflate(R.layout.row_teste, parent, false);
-            return new ViewHolder(view);
-        } else {
-            view = inflater.inflate(R.layout.section_teste, parent, false);
-            return new SectionViewHolder(view);
+    }
+
+    @Override public RecyclerView.ViewHolder onCreateDataViewHolder(ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.row_teste, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override public void onBindSectionViewHolder(RecyclerView.ViewHolder holder, int position) {
+        SectionItem item = getSection(position);
+        SectionViewHolder holder2 = ((SectionViewHolder) holder);
+        if (item != null) {
+            holder2.tvSection.setText(item.section);
         }
     }
 
-    @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == DATA) {
-            DataItem<TesteVO> item = getItem(position);
-            ViewHolder holder1 = (ViewHolder) holder;
-            if (item != null) {
-                holder1.tvNome.setText(item.data.getName());
-                holder1.tvCpf.setText(item.data.getCpf());
-            }
-        } else {
-            SectionItem item = getSection(position);
-            SectionViewHolder holder2 = ((SectionViewHolder) holder);
-            if (item != null) {
-                holder2.tvSection.setText(item.section);
-            }
+    @Override public void onBindDataViewHolder(RecyclerView.ViewHolder holder, int position) {
+        DataItem<TesteVO> item = getItem(position);
+        ViewHolder holder1 = (ViewHolder) holder;
+        if (item != null) {
+            holder1.tvNome.setText(item.data.getName());
+            holder1.tvCpf.setText(item.data.getCpf());
         }
     }
 

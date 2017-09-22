@@ -38,14 +38,34 @@ public abstract class SectionAdapter<T extends Sectionable> extends RecyclerView
         return null;
     }
 
-    @Override public abstract RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
+    @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        RecyclerView.ViewHolder vh;
+        if(viewType == DATA){
+            vh = onCreateDataViewHolder(parent);
+        }else{
+            vh = onCreateSectionViewHolder(parent);
+        }
+        return vh;
+    }
 
-
-    @Override public abstract void onBindViewHolder(RecyclerView.ViewHolder holder, int position);
+    @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position){
+        if (getItemViewType(position) == DATA){
+            onBindDataViewHolder(holder,position);
+        }else{
+            onBindSectionViewHolder(holder,position);
+        }
+    }
 
     @Override public int getItemCount() {
         return dataSet.size();
     }
 
+    public abstract RecyclerView.ViewHolder onCreateSectionViewHolder(ViewGroup parent);
+
+    public abstract RecyclerView.ViewHolder onCreateDataViewHolder(ViewGroup parent);
+
+    public abstract void onBindSectionViewHolder(RecyclerView.ViewHolder holder, int position);
+
+    public abstract void onBindDataViewHolder(RecyclerView.ViewHolder holder, int position);
 
 }
